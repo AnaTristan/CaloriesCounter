@@ -1,9 +1,10 @@
 import { useState, ChangeEvent } from "react";
 import { categories } from "../data/Categories";
+import { Activity } from "../types";
 
 const Form = () => {
-  const [activity, setActivity] = useState({
-    category: "",
+  const [activity, setActivity] = useState<Activity>({
+    category: 1,
     name: "",
     calories: 0,
   });
@@ -14,10 +15,19 @@ const Form = () => {
     // console.log(e.target.id);
     // console.log(e.target.value);
 
+    const isNumber = ["category", "calories"].includes(e.target.id);
+
     setActivity({
       ...activity,
-      [e.target.id]: e.target.value,
+      [e.target.id]: isNumber ? +e.target.value : e.target.value,
     });
+  };
+
+  const isActivity = () => {
+    const { name, calories } = activity;
+
+    console.log(name.trim() !== "" && calories > 0);
+    return name.trim() !== "" && calories > 0;
   };
 
   return (
@@ -70,8 +80,9 @@ const Form = () => {
 
       <input
         type="submit"
-        className="bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer"
-        value="Guardar"
+        className="bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer disabled:opacity-10"
+        value={activity.category === 1 ? "guardar comida" : "Guardar ejercicio"}
+        disabled={!isActivity()}
       />
     </form>
   );
