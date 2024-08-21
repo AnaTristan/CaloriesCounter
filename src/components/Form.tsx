@@ -86,7 +86,7 @@ const Form = ({ dispatch }: FormProps) => {
 
       <div className="grid grid-cols-1 gap-3">
         <label htmlFor="calories" className="font-bold">
-          Actividad
+          Calorias
         </label>
         <input
           id="calories"
