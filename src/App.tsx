@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useMemo, useReducer } from "react";
 import Form from "./components/Form";
 import ActivityList from "./components/ActivityList";
 import { activityReducer, initialState } from "./reducers/activityReducer";
@@ -6,9 +6,12 @@ import { activityReducer, initialState } from "./reducers/activityReducer";
 function App() {
   const [state, dispatch] = useReducer(activityReducer, initialState);
 
-  useEffect(()=>{
-    localStorage.setItem('activities' ,JSON.stringify(state.activities))
-  },[state.activities])
+  useEffect(() => {
+    localStorage.setItem("activities", JSON.stringify(state.activities));
+  }, [state.activities]);
+
+  const canRestart = () =>
+    useMemo(() => state.activities.length > 0, [state.activities]);
 
   return (
     <>
@@ -17,6 +20,14 @@ function App() {
           <h1 className="text-center text-lg font-bold text-white uppercase">
             Contador de calorias
           </h1>
+
+          <button
+            className="bg-gray-800 hover:bg-gray-900 p-2 font-bold uppercase text-white cursor-pointer text-sm disabled:opacity-0 "
+            disabled={!canRestart()}
+            onClick={() => dispatch({ type: "delete-all" })}
+          >
+            Reiniciar App
+          </button>
         </div>
       </header>
 
